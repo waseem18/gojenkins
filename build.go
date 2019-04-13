@@ -415,6 +415,19 @@ func (b *Build) GetMatrixRuns() ([]*Build, error) {
 	return result, nil
 }
 
+func (b *Build) HasTestResults() (bool, error) {
+
+	url := b.Base + "/testReport"
+	var report TestResult
+
+	response, err := b.Jenkins.Requester.GetJSON(url, &report, nil)
+	if err != nil {
+		return false, err
+	}
+
+	return response.StatusCode == 200, nil
+}
+
 func (b *Build) GetResultSet() (*TestResult, error) {
 
 	url := b.Base + "/testReport"
